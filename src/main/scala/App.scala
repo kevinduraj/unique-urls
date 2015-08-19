@@ -21,15 +21,11 @@ object App {
   def main(args: Array[String]) {
 
     var IP = "127.0.0.1"
-    var loop = 3
 
-    if (args.size > 1) {
+    if (args.size > 0) {
       println("args: " + args(0))
       IP = args(0).toString
-      loop = args(1).toInt
     }
-
-
 
 
     val filename = "/home/temp/sort3DCAVs"

@@ -18,6 +18,6 @@ CREATE TABLE bigtable (
 ## Packaging
 ```
 $ sbt package
-$ sbt "run 127.0.0.1 1000000"
+$ sbt "run 127.0.0.1"
 
 ```

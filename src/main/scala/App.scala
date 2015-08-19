@@ -2,9 +2,22 @@
  * Querying Cassandra from Scala
  */
 import scala.io.Source
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
+
 
 object App {
+    
+  //--------------------------------------------------------------------------//
+  val clusterBuilder = Cluster.builder()
+  clusterBuilder.addContactPoint("127.0.0.1")
+  clusterBuilder.withPort(9042)
+  val cluster = clusterBuilder.build()
+  val session = cluster.connect("engine35")
+  println(session.getCluster().getClusterName + " connection successful\n")
 
+  
+  //--------------------------------------------------------------------------//
   def main(args: Array[String]) {
 
     var IP = "127.0.0.1"
@@ -16,31 +29,35 @@ object App {
       loop = args(1).toInt
     }
 
-    //-------------------------------------------------------------//
 
-    val filename = "/tmp/flatfile.dat"
+
+
+    val filename = "/home/temp/sort3DCAVs"
+
     for (line <- Source.fromFile(filename).getLines()) {
        println(line)
+       putQueryInsert(line)
     }
 
-    //-------------------------------------------------------------//
+    disconnect("engine35");
 
+  } // end of main
+  //--------------------------------------------------------------------------//
+  def putQueryInsert(url: String): Unit = {
 
-    //try {
-    //  val cass = new ClassCassandra(IP)
-    //  cass.putQueryInsert(loop)
-    //  cass.disconnect("Method: getQueryResult")
-    //} catch {
-    //  case e: Exception => println("exception caught: " + e);
-    //}
+      val SQL =
+          "INSERT INTO engine35.bigtable (url)" +
+          " VALUES ('" + url + "')"
 
-    //    try {
-    //      ObjCassandra.putQueryInsert(loop).getQueryResult().disconnect("Method: getQueryResult")
-    //    } catch {
-    //      case e: Exception => println("exception caught: " + e);
-    //    }
-    //  }
-
-
+      session.execute(SQL)
   }
+  //--------------------------------------------------------------------------//
+
+  def disconnect(str: String) {
+    cluster.close()
+    session.close()
+    println("\n" + str + " successfully closed")
+  }
+  //--------------------------------------------------------------------------//
+
 }

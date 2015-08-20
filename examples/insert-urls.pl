@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 #-----------------------------------------------------------------------#
+use Time::HiRes qw ( time alarm sleep );
 use IO::Async::Loop;
 use Net::Async::CassandraCQL;
 use Protocol::CassandraCQL qw( CONSISTENCY_QUORUM );
@@ -27,7 +28,7 @@ while (my $row = <$fh>) {
   chomp $row;
   next if $row =~ /(\'|\[|\%)/; 
   next if length($row) < 10;
-  next if $i < 1067000;
+  next if $i < 3847000;
 
   my $SQL = "INSERT INTO engine35.table2 (url) VALUES ('$row')";
   print $i . " " . $SQL . "\n" if ($i % 1000 == 0);
@@ -35,7 +36,8 @@ while (my $row = <$fh>) {
 
   if ($i % 1000 == 0) {
       Future->needs_all( @f )->get;
-      @f = ();
+      @f=(); 
+      sleep 0.1;
   }
 
 }

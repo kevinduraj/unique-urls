@@ -10,10 +10,11 @@ USE engine35;
 
 --- create a table ---
 CREATE TABLE bigtable (
-  url text PRIMARY KEY,
-  root text
+  url text PRIMARY KEY
 );
 ```
+## Loading from cqlsh
+COPY engine35.bigtable FROM '/home/temp/sort3DCAVs';
 
 ## Packaging
 ```

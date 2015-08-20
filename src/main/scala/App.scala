@@ -13,6 +13,8 @@ object App {
   clusterBuilder.addContactPoint("127.0.0.1")
   clusterBuilder.withPort(9042)
   val cluster = clusterBuilder.build()
+  val session = cluster.connect("engine35")
+  println(session.getCluster().getClusterName + " connection successful\n")
 
 
   //--------------------------------------------------------------------------//
@@ -40,8 +42,6 @@ object App {
   }
   //--------------------------------------------------------------------------//
   def putQueryInsert(url: String): Unit = {
-    val session = cluster.connect("engine35")
-    println(session.getCluster().getClusterName + " connection successful\n")
 
     val SQL =
       "INSERT INTO engine35.bigtable (url)" +
@@ -49,13 +49,13 @@ object App {
 
     println(SQL)
     session.execute(SQL)
-    session.close()
+    session.finalize()
   }
   //--------------------------------------------------------------------------//
 
   def disconnect(str: String) {
     cluster.close()
-    //session.close()
+    session.close()
     println("\n" + str + " successfully closed")
   }
   //--------------------------------------------------------------------------//

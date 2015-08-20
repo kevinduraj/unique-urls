@@ -29,7 +29,7 @@ object App {
 
 
     var counter = 0;
-    val filename = "/home/temp/sort3DCAVs"
+    val filename = "/home/spider/raw/log/all-08-18.log"
 
     for (line <- Source.fromFile(filename).getLines()) {
       counter += 1
@@ -43,13 +43,9 @@ object App {
   //--------------------------------------------------------------------------//
   def putQueryInsert(url: String): Unit = {
 
-    val SQL =
-      "INSERT INTO engine35.bigtable (url)" +
-        " VALUES ('" + url + "');"
-
+    val SQL = "INSERT INTO engine35.bigtable (url) VALUES ('" + url + "');"
     println(SQL)
     session.execute(SQL)
-    session.finalize()
   }
   //--------------------------------------------------------------------------//
 

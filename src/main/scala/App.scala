@@ -7,7 +7,7 @@ import com.datastax.driver.core.Session;
 
 
 object App {
-    
+
   //--------------------------------------------------------------------------//
   val clusterBuilder = Cluster.builder()
   clusterBuilder.addContactPoint("127.0.0.1")
@@ -16,7 +16,7 @@ object App {
   val session = cluster.connect("engine35")
   println(session.getCluster().getClusterName + " connection successful\n")
 
-  
+
   //--------------------------------------------------------------------------//
   def main(args: Array[String]) {
 
@@ -31,21 +31,22 @@ object App {
     val filename = "/home/temp/sort3DCAVs"
 
     for (line <- Source.fromFile(filename).getLines()) {
-       println(line)
-       putQueryInsert(line)
+      println(line)
+      putQueryInsert(line)
     }
 
     disconnect("engine35");
 
-  } // end of main
+  }
   //--------------------------------------------------------------------------//
   def putQueryInsert(url: String): Unit = {
 
-      val SQL =
-          "INSERT INTO engine35.bigtable (url)" +
-          " VALUES ('" + url + "')"
+    val SQL =
+      "INSERT INTO engine35.bigtable (url)" +
+        " VALUES ('" + url + "')"
 
-      session.execute(SQL)
+    session.execute(SQL)
+    session.execute("commit")
   }
   //--------------------------------------------------------------------------//
 

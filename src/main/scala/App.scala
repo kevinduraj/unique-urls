@@ -28,11 +28,13 @@ object App {
     }
 
 
+    var counter = 0;
     val filename = "/home/temp/sort3DCAVs"
 
     for (line <- Source.fromFile(filename).getLines()) {
-      println(line)
-      putQueryInsert(line)
+      counter += 1
+      print(counter + " ")
+      putQueryInsert(line.trim())
     }
 
     disconnect("engine35");
@@ -43,10 +45,10 @@ object App {
 
     val SQL =
       "INSERT INTO engine35.bigtable (url)" +
-        " VALUES ('" + url + "')"
+        " VALUES ('" + url + "');"
 
+    println(SQL)
     session.execute(SQL)
-    session.execute("commit")
   }
   //--------------------------------------------------------------------------//
 

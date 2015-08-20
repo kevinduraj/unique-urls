@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+#-----------------------------------------------------------------------#
+use IO::Async::Loop;
+use Net::Async::CassandraCQL;
+use Protocol::CassandraCQL qw( CONSISTENCY_QUORUM );
+$| = 1;
+
+my $loop = IO::Async::Loop->new;
+my $cass = Net::Async::CassandraCQL->new(
+   host => "127.0.0.1",
+   keyspace => "engine35",
+   default_consistency => CONSISTENCY_QUORUM,
+);
+
+$loop->add( $cass );
+$cass->connect->get;
+ 
+my @f;
+my $filename = '/home/spider/raw/log/all-08-18.log';
+
+open(my $fh, $filename) or die "Could not open file '$filename' $!";
+
+while (my $row = <$fh>) {
+
+  $i++;
+
+  chomp $row;
+  next if $row =~ /(\'|\[|\%)/; 
+  next if $i < 4330000;
+
+  my $SQL = "INSERT INTO engine35.table2 (url) VALUES ('$row')";
+  print $i . " " . $SQL . "\n" if ($i % 5000 == 0);
+  push @f, $cass->query( $SQL );
+
+}
+#-----------------------------------------------------------------------#
+

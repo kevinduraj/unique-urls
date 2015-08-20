@@ -28,16 +28,16 @@ while (my $row = <$fh>) {
   chomp $row;
   next if $row =~ /(\'|\[|\%)/; 
   next if length($row) < 10;
-  next if $i < 3847000;
+  next if $i < 17654000;
 
   my $SQL = "INSERT INTO engine35.table2 (url) VALUES ('$row')";
-  print $i . " " . $SQL . "\n" if ($i % 1000 == 0);
+  print $i . " " . $SQL . "\n" if ($i % 2000 == 0);
   push @f, $cass->query( $SQL );
 
-  if ($i % 1000 == 0) {
+  if ($i % 2000 == 0) {
       Future->needs_all( @f )->get;
       @f=(); 
-      sleep 0.1;
+      sleep 1;
   }
 
 }

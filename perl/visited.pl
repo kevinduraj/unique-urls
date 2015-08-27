@@ -17,7 +17,7 @@ $loop->add( $cass );
 $cass->connect->get;
  
 my @f;
-my $filename = '/home/data/all-08-18.log';
+my $filename = '/home/data/part_f.dat';
 
 open(my $fh, $filename) or die "Could not open file '$filename' $!";
 
@@ -28,10 +28,9 @@ while (my $row = <$fh>) {
   chomp $row;
   next if $row =~ /(\'|\[|\%)/; 
   next if length($row) < 10;
-  next if length($row) > 250;;
-  next if $i < 1_300_090_000;
+  #next if $i < 414_250_000;
 
-  my $SQL = "INSERT INTO engine35.table35 (url) VALUES ('$row')";
+  my $SQL = "INSERT INTO engine35.visited (url) VALUES ('$row')";
   print $i . " " . $SQL . "\n" if ($i % 10000 == 0);
   push @f, $cass->query( $SQL );
 

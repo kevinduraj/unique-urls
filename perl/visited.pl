@@ -9,7 +9,7 @@ $| = 1;
 my $loop = IO::Async::Loop->new;
 my $cass = Net::Async::CassandraCQL->new(
    host => "108.210.29.50",
-   keyspace => "engine35",
+   keyspace => "visited",
    default_consistency => CONSISTENCY_QUORUM,
 );
 
@@ -17,7 +17,7 @@ $loop->add( $cass );
 $cass->connect->get;
  
 my @f;
-my $filename = '/home/data/part_f.dat';
+my $filename = '/home/hadoop/mysql/export/visited_77.dat';
 
 open(my $fh, $filename) or die "Could not open file '$filename' $!";
 
@@ -30,7 +30,7 @@ while (my $row = <$fh>) {
   next if length($row) < 10;
   #next if $i < 414_250_000;
 
-  my $SQL = "INSERT INTO engine35.visited (url) VALUES ('$row')";
+  my $SQL = "INSERT INTO visited.visit1 (url) VALUES ('$row')";
   print $i . " " . $SQL . "\n" if ($i % 10000 == 0);
   push @f, $cass->query( $SQL );
 

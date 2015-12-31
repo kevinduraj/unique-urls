@@ -9,7 +9,7 @@ DESCRIBE KEYSPACES;
 USE engine35;
 
 --- create a table ---
-CREATE TABLE bigtable (
+CREATE TABLE table35 (
   url text PRIMARY KEY
 );
 ```
